@@ -1,0 +1,8 @@
+spotipy
+lyricsgenius
+streamlit
+pandas
+transformers
+torch
+textblob
+python-dotenv
