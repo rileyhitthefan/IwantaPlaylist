@@ -1,6 +1,4 @@
-# SpotiMine
-
-### Updated Project Outline: Spotify Sentiment-Based Playlist Recommender
+### Spotify Sentiment-Based Playlist Recommender
 
 #### **1. Project Overview**
 - **Objective:** Recommend playlists based on user preferences, playlist sentiment analysis, and related tracks. 
