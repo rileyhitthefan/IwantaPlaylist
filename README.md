@@ -1,1 +1,1 @@
-# SpotiFine
+# SpotiMine
