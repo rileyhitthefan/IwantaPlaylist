@@ -35,9 +35,9 @@
    - Fetch track details for playlists (names, artists, IDs).
 2. Store playlist and track data in session state.
 
-**Phase 3: Sentiment Analysis**
-1. Implement sentiment analysis on playlist names and lyrics
-2. Categorize playlists based on sentiment (e.g., positive, negative, neutral).\
+**Phase 3: Contextual Semantic Search**
+1. Embed lyrics and mood information
+2. Use similarity measure such as cosine to retrieve most relevant songs/playlists
 
 **Phase 4: Recommendation System**
 1. Use the Spotify API to fetch related tracks based on:

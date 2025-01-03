@@ -2,7 +2,9 @@ spotipy
 lyricsgenius
 streamlit
 pandas
+numpy
 transformers
-torch
-textblob
+sentence-transformers
+scikit-learn
+text2text
 python-dotenv

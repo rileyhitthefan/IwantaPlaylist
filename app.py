@@ -2,7 +2,7 @@ import streamlit as st
 from spotify_auth import spotify_auth
 from user_data import * # display_user_data, get_playlists, get_playlist_tracks
 from lyrics import * # match_lyrics, lyrics_to_words, tokenize_lyrics
-from sentiment import sentiment_analysis
+from css import * # sentiment_analysis
 
 # Page title
 st.set_page_config(page_title="SpotiMine")
