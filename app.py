@@ -2,7 +2,7 @@ import streamlit as st
 from spotify_auth import spotify_auth
 from user_data import * # display_user_data, get_playlists, get_playlist_tracks
 from lyrics import * # match_lyrics, clean_lyrics, summarize_lyrics, predict_sentiment
-from recommend import recommend
+from recommend import * # recommend, add_playlist
 
 # Page title
 st.set_page_config(page_title="SpotiMine")
@@ -52,11 +52,12 @@ if st.session_state["spotify_client"]:
     playlist_id = ''.join(p['id'] for p in user_playlists if p['name'] == selected_playlist)
     if playlist_id:
         tracks = get_playlist_tracks(sp, playlist_id)
-        st.write(pd.DataFrame(tracks).sample(50))
+        tracks = pd.DataFrame(tracks)
+        st.write(tracks)
         
         # Match lyrics
         with st.spinner("Matching lyrics..."):
-            lyrics_df = match_lyrics(pd.DataFrame(tracks))
+            lyrics_df = match_lyrics(tracks.sample(50) if len(tracks) > 50 else tracks)
             lyrics_df = clean_lyrics(lyrics_df, 'lyrics')
         st.write("Lyrics found!")
         
@@ -74,6 +75,10 @@ if st.session_state["spotify_client"]:
         st.write(summarize_lyrics(user_mood))
         
         st.header("Here's your playlist")
-        st.write(recommend(sp, user_mood))
+        recs = recommend(sp, user_mood)
+        st.write(recs)
         
-            
+        if st.button("Add playlist", type="primary"):
+            playlist_name = st.text_input("Give your playlist a name", user_mood[:30])
+            rec_tracks = recommend(sp, user_mood)
+            add_playlist(sp, playlist_name, recs['id'].tolist())

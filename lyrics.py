@@ -45,12 +45,6 @@ def match_lyrics(df, frac = 0.3):
                 'artist': artist,
                 'lyrics': lyrics.lyrics
             })
-        else:
-            list_lyrics.append({
-                'title': title,
-                'artist': artist,
-                'lyrics': "Lyrics unavailable"
-            })
 
     list_lyrics = pd.DataFrame(list_lyrics)
     return list_lyrics
@@ -70,9 +64,9 @@ def clean_lyrics(df, column):
     df[column] = df[column].str.replace(r"(instrumental|guitar|solo)", "", regex=True) 
     df[column] = df[column].str.replace(r"\[.*?\]", "", regex=True)
     # remove new line
-    df[column] = df[column].str.replace(r"\n", " ", regex=True)
+    df[column] = df[column].str.replace(r"\n", ". ", regex=True)
     # remove special characters
-    df[column] = df[column].str.replace(r"[^\w\d'\s]+", "", regex=True)
+    df[column] = df[column].str.replace(r"[^\w\d'\s.]+", "", regex=True)
     df[column] = df[column].str.strip()
 
     return df
