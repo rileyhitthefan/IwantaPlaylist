@@ -2,6 +2,8 @@ import spotipy
 import pandas as pd
 
 def recommend(sp, query, limit=30):
+    if len(query) > 250:
+        query = query[:250]
     search_recs = sp.search(q = query, type="track", limit = limit)
     recs = []
     for track in search_recs['tracks']['items']:
@@ -19,4 +21,4 @@ def recommend(sp, query, limit=30):
 def add_playlist(sp, name, tracks):
     # create playlist
     new_playlist = sp.user_playlist_create(sp.me()['id'], name = name, public=False)
-    playlist_add_items = sp.playlist_add_items(new_playlist['id'], tracks)
+    sp.playlist_add_items(new_playlist['id'], tracks)
