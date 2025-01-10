@@ -1,8 +1,8 @@
 import streamlit as st 
 from spotify_auth import spotify_auth
 from user_data import * # display_user_data, get_playlists, get_playlist_tracks
-from lyrics import * # match_lyrics, lyrics_to_words, tokenize_lyrics
-from css import * # sentiment_analysis
+from lyrics import * # match_lyrics, clean_lyrics, summarize_lyrics, predict_sentiment
+from recommend import recommend
 
 # Page title
 st.set_page_config(page_title="SpotiMine")
@@ -34,7 +34,7 @@ if st.session_state["spotify_client"]:
     sp = st.session_state["spotify_client"]
     # Input current music mood
     st.header("Current Mood")
-    user_mood = st.text_input("Music mood", "running under the rain so no one knows i'm crying")
+    user_mood = st.text_input("What's the occasion?", "falling in love with the guy across the room")
 
     # Get user's playlists
     user_playlists = get_playlists(sp)
@@ -52,23 +52,28 @@ if st.session_state["spotify_client"]:
     playlist_id = ''.join(p['id'] for p in user_playlists if p['name'] == selected_playlist)
     if playlist_id:
         tracks = get_playlist_tracks(sp, playlist_id)
-        st.write(pd.DataFrame(tracks))
+        st.write(pd.DataFrame(tracks).sample(50))
         
         # Match lyrics
         with st.spinner("Matching lyrics..."):
             lyrics_df = match_lyrics(pd.DataFrame(tracks))
-            cleaned_lyrics_df = clean_lyrics(lyrics_df, 'lyrics')
-            cleaned_lyrics_df = tokenize_lyrics(cleaned_lyrics_df, 'lyrics')
+            lyrics_df = clean_lyrics(lyrics_df, 'lyrics')
+        st.write("Lyrics found!")
         
         # Sentiment Analysis
-        with st.spinner("Analyzing sentiment..."):
-            cleaned_lyrics_df['sentiment'] = sentiment_analysis(cleaned_lyrics_df['lyrics'])
-            current_mood = [user_mood, selected_playlist, playlist_description]
-            current_mood_sentiment = []
-            for text, sentiment in zip(current_mood, sentiment_analysis(current_mood)):
-                current_mood_sentiment.append({"text": text, "sentiment": sentiment})
-            cleaned_lyrics_df['sentiment'] = sentiment_analysis(cleaned_lyrics_df['lyrics'])
+        with st.spinner("Summarizing your playlist..."):
+            summaries = []
+            for lyrics in lyrics_df['lyrics']:
+                summaries.append(summarize_lyrics(lyrics))
+            lyrics_df['summary'] = summaries
+            lyrics_sample = lyrics_df.sample(6)['summary']
+        
+        user_mood = user_mood + "." + playlist_description + ".".join(lyrics_sample) 
             
-        st.header("Sentiment Analysis")
-        st.write(pd.DataFrame(current_mood_sentiment))
-        st.write(pd.DataFrame(cleaned_lyrics_df))
+        st.header("Summarization completed!")
+        st.write(summarize_lyrics(user_mood))
+        
+        st.header("Here's your playlist")
+        st.write(recommend(sp, user_mood))
+        
+            

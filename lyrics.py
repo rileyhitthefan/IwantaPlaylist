@@ -5,17 +5,19 @@ load_dotenv()
 import lyricsgenius 
 
 import pandas as pd
+import random
 
 import nltk
 from nltk.tokenize import word_tokenize
-from nltk.corpus import wordnet
-from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+from nltk.probability import FreqDist
 
-# nltk.download('stopwords')
-# nltk.download('wordnet')   
-# nltk.download('punkt')
-# nltk.download('wordnet')
-# nltk.download('averaged_perceptron_tagger')   
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+import torch
+
+model_name = "tabularisai/multilingual-sentiment-analysis"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 gen_client_access_token = os.getenv("GENIUS_CLIENT_TOKEN")
 genius = lyricsgenius.Genius(gen_client_access_token)
@@ -75,43 +77,50 @@ def clean_lyrics(df, column):
 
     return df
 
-def nltk_pos_tagger(nltk_tag):
+def summarize_lyrics(text, num_sen = 3):
     """
-    Map NLTK POS tags to WordNet POS tags for lemmatization.
-    """
-    if nltk_tag.startswith('J'):
-        return wordnet.ADJ
-    elif nltk_tag.startswith('V'):
-        return wordnet.VERB
-    elif nltk_tag.startswith('N'):
-        return wordnet.NOUN
-    elif nltk_tag.startswith('R'):
-        return wordnet.ADV
-    else:
-        return wordnet.NOUN  # Default to noun
-
-def tokenize_lyrics(df, column):
-    """
-    Tokenizes and lemmatizes the lyrics column of a DataFrame.
+    Summarize the lyrics column of a DataFrame.
     
     Args:
-        df (DataFrame): df containing song information.
-        column (str): column to process
-    
+        text (str): lyrics to summarize
+        num_sen (int): number of sentences to summarize
     Returns:
-        df (DataFrame): DataFrame with tokenized and lemmatized lyrics.
-    """
-    lemmatizer = WordNetLemmatizer()
+        df (DataFrame): DataFrame with summarized lyrics.
+    """        
+    languages = stopwords.fileids() # list of supported languages
+    stopWords = set(stopwords.words([language for language in languages]))
     
-    def process_lyrics(lyrics):
-        tokens = word_tokenize(lyrics)
-        # get pos tags
-        pos_tags = nltk.pos_tag(tokens)
-        # lemmatize words based on pos tags
-        lemmatized = [
-            lemmatizer.lemmatize(token, nltk_pos_tagger(tag))
-            for token, tag in pos_tags
-        ]
-        return lemmatized
-    df['tokens'] = df[column].apply(process_lyrics)
-    return df
+    sentences = []
+    for sentence in text.split('.'):
+        sentences.append(sentence)
+        
+    words = word_tokenize(text)
+    words = [word for word in words if word not in stopWords]
+    
+    fdict = FreqDist(words) # frequency distribution
+    
+    # assign scores to senteces based on word frequencies
+    sentence_scores = [sum(fdict[word] for word in word_tokenize(sentence) if word in fdict) for sentence in sentences]
+    sentence_scores = list(enumerate(sentence_scores))
+    
+    # sort descending
+    sorted_sentences = sorted(sentence_scores, key = lambda x: x[1], reverse = True)
+    
+    # Randomly select the top `num_sentences` sentences for the summary
+    random_sentences = random.sample(sorted_sentences[:10], num_sen)
+
+    # Sort the randomly selected sentences based on their original order in the text
+    summary_sentences = sorted(random_sentences, key=lambda x: x[0])
+
+    # Create the summary
+    summary = ' '.join([sentences[i] for i, _ in summary_sentences])
+
+    return summary
+
+def predict_sentiment(texts):
+    # sentiment_map = {0: "Somber", 1: "Sad", 2: "Neutral", 3: "Happy", 4: "Estactic"}
+    pipe = pipeline(task="sentiment-analysis", model=model_name)
+    sentiments = pipe(texts)
+    labels = [sentiment['label'] for sentiment in sentiments]
+    # return [sentiment_map[int(p)] for p in labels]
+    return labels
