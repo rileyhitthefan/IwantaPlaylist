@@ -6,6 +6,7 @@ def recommend(sp, query, limit=30):
     recs = []
     for track in search_recs['tracks']['items']:
         recs.append({
+            'id': track['id'],
             'name': track['name'],
             'artist': track['artists'][0]['name'],
             'album': track['album']['name'],
@@ -14,3 +15,8 @@ def recommend(sp, query, limit=30):
         })
         
     return pd.DataFrame(recs)
+
+def add_playlist(sp, name, tracks):
+    # create playlist
+    new_playlist = sp.user_playlist_create(sp.me()['id'], name = name, public=False)
+    playlist_add_items = sp.playlist_add_items(new_playlist['id'], tracks)

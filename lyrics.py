@@ -20,7 +20,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 gen_client_access_token = os.getenv("GENIUS_CLIENT_TOKEN")
-genius = lyricsgenius.Genius(gen_client_access_token)
+genius = lyricsgenius.Genius(gen_client_access_token, sleep_time=1)
 
 def match_lyrics(df, frac = 0.3):
     """
