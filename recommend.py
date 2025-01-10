@@ -1,7 +1,10 @@
 import spotipy
 import pandas as pd
+import spotify_auth
 
 def recommend(sp, query, limit=30):
+    if not sp: 
+        sp = spotify_auth()
     if len(query) > 250:
         query = query[:250]
     search_recs = sp.search(q = query, type="track", limit = limit)
