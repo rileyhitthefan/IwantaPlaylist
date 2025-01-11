@@ -1,5 +1,7 @@
 ### Spotify Mood-Based Playlist Recommender
 
+----
+
 #### **Project Overview**
 - **Objective:** Recommend playlists based on user specified mood and their chosen tracks 
 - **Key Features:**
