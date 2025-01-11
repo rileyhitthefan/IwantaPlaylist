@@ -52,7 +52,7 @@
 
 **Phase 1: Spotify Authentication and Setup**
 1. Set up Spotify Developer account and create an app.
-2. Configure the Spotify OAuth process in `spotify_auth.py`.
+2. Configure the Spotify OAuth process.
 3. Allow users to log in using their Spotify accounts.
 
 **Phase 2: Fetching Data**
@@ -62,18 +62,15 @@
 2. Store playlist and track data in session state.
 
 **Phase 3: Contextual Semantic Search**
-1. Embed lyrics and mood information
-2. Use similarity measure such as cosine to retrieve most relevant songs/playlists
+1. Embed lyrics and mood information.
+2. Use similarity measure such as cosine to retrieve most relevant songs.
+3. Summarize song lyrics and user input to create query.
 
 **Phase 4: Recommendation System**
 1. Use the Spotify API to fetch related tracks based on:
-   - Sentiment of playlists.
+   - Summary of tracks lyrics and user's mood.
    - Similarity of track features (e.g., genre, artist, popularity).
 2. Generate recommendations for playlists with 30 tracks each.
-
-**Phase 5: Feedback System**
-1. Implement a like/dislike button for each recommended playlist.
-2. Store feedback for analysis and refining recommendations.
 
 ----
 
@@ -84,16 +81,18 @@
 
 ----
 
-### OAuth
+#### Notes
+
+**OAuth**
 https://medium.com/@ruixdsgn/a-guide-to-implementing-oauth-authorization-using-spotipy-for-a-playlist-generator-app-6ab50cdf6c3
 
-### NLTK -- Natural Language Toolkit
+**NLTK -- Natural Language Toolkit**
 Provides corpora and lexical resources annd text processing libraries for a various tasks (classification, stemming, parsing, semantic reasoning...)
 
-### Sentiment Analysis
+**Sentiment Analysis**
 VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool.
 - Sentiment lexicon is a list of lexical features labeled according to semantic orientation as positive/negative
 For multilingual use case: https://huggingface.co/tabularisai/multilingual-sentiment-analysis
 
-### Contextual Semantic Search (CSS)
+**Contextual Semantic Search (CSS)**
 Search and find information by considering meaning and context to deliver more relevant results. A prompt is analyzed with respect to its sentiment, emotion and intent.
