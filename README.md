@@ -1,4 +1,4 @@
-### Spotify Sentiment-Based Playlist Recommender
+### Spotify Mood-Based Playlist Recommender
 
 ----
 #### **Project Overview**
