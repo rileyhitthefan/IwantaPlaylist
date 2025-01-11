@@ -1,28 +1,50 @@
 ### Spotify Sentiment-Based Playlist Recommender
 
-#### **1. Project Overview**
-- **Objective:** Recommend playlists based on user preferences, playlist sentiment analysis, and related tracks. 
+----
+#### **Project Overview**
+- **Objective:** Recommend playlists based on user specified mood and their chosen tracks 
 - **Key Features:**
   - User authentication with Spotify.
-  - Sentiment analysis of playlist
+  - Summarization and sentiment analysis of user's tracks.
   - Fetching related tracks for playlist suggestions.
   - User feedback system (like/dislike) for improving recommendations.
 
-#### **2. File Structure**
+#### **1. File Structure**
 ```
 .
 ├── app.py                      # Main Streamlit app
 ├── spotify_auth.py             # Spotify authentication logic
 ├── user_data.py                # Functions for fetching playlists, tracks, and related content
-├── lyrics.py                   # Match lyrics with songs
-├── sentiment.py                # Sentiment analysis module
-├── recommender.py              # Logic for related tracks and playlist recommendations
-├── utils.py                    # Utility functions (e.g., data processing)
+├── lyrics.py                   # Match lyrics with songs and process lyrics
+├── recommend.py                # Logic for related tracks and playlist recommendations
 ├── requirements.txt            # Dependencies
 └── README.md                   # Project documentation
 ```
 
-#### **3. Phases and Steps**
+#### **2. Installation and Usage**
+- Download the repo or clone to your local environment
+   ```
+   git clone https://github.com/rileyhitthefan/SpotiMine.git
+   ```
+- Install required libraries
+   ```
+   pip install -r requirements.txt
+   ```
+- Create an .env file in the home folder and store your client information for [Spotify](https://developer.spotify.com/documentation/web-api) and [Genius](https://docs.genius.com/#/getting-started-h1)
+   ```
+   GENIUS_CLIENT_ID = your_genius_client_id_here
+   GENIUS_CLIENT_SECRET = your_genius_client_secret_here
+   GENIUS_CLIENT_TOKEN = your_genius_client_token_here
+   SPOTIFY_CLIENT_ID = your_spotify_client_id_here
+   SPOTIFY_CLIENT_SECRET = your_spotify_client_secret_here
+   SPOTIPY_REDIRECT_URI = http://localhost:8888/callback
+   ```
+- Run Streamlit application
+   ```
+   streamlit run ./src/app.py
+   ```
+----
+#### **Phases and Steps**
 
 **Phase 1: Spotify Authentication and Setup**
 1. Set up Spotify Developer account and create an app.
@@ -54,7 +76,7 @@
 - **Sentiment Analysis:** Transformer, NLTK (VADER)
 - **Front-End:** Streamlit
 
----
+----
 ### OAuth
 https://medium.com/@ruixdsgn/a-guide-to-implementing-oauth-authorization-using-spotipy-for-a-playlist-generator-app-6ab50cdf6c3
 
