@@ -1,12 +1,13 @@
 ### Spotify Mood-Based Playlist Recommender
 
-----
 #### **Project Overview**
 - **Objective:** Recommend playlists based on user specified mood and their chosen tracks 
 - **Key Features:**
   - User authentication with Spotify.
   - Summarization and sentiment analysis of user's tracks.
   - Fetching related tracks for playlist suggestions.
+
+----
 
 #### **1. File Structure**
 ```
@@ -44,7 +45,9 @@
    ```
    streamlit run ./src/app.py
    ```
+
 ----
+
 #### **Phases and Steps**
 
 **Phase 1: Spotify Authentication and Setup**
@@ -72,12 +75,15 @@
 1. Implement a like/dislike button for each recommended playlist.
 2. Store feedback for analysis and refining recommendations.
 
+----
+
 #### **4. Tools and Technologies**
 - **Back-End:** Spotipy (Spotify API Python library)
 - **Sentiment Analysis:** Transformer, NLTK (VADER)
 - **Front-End:** Streamlit
 
 ----
+
 ### OAuth
 https://medium.com/@ruixdsgn/a-guide-to-implementing-oauth-authorization-using-spotipy-for-a-playlist-generator-app-6ab50cdf6c3
 
