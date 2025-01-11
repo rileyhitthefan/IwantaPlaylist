@@ -1,4 +1,5 @@
 import streamlit as st 
+import time
 from spotify_auth import spotify_authenticate
 from user_data import * # display_user_data, get_playlists, get_playlist_tracks
 from lyrics import * # match_lyrics, clean_lyrics, summarize_lyrics, predict_sentiment
@@ -36,6 +37,7 @@ if st.session_state["spotify_client"]:
     st.header("Current Mood")
     user_mood = st.text_input("What's the occasion?", "falling in love with the guy across the room")
 
+    start_time = time.time() # keep track of calls to spotify api
     # Get user's playlists
     user_playlists = get_playlists(sp)
     playlist_names = [playlist['name'] for playlist in user_playlists]
@@ -70,14 +72,18 @@ if st.session_state["spotify_client"]:
             random_sample = len(lyrics_df)//2
             lyrics_sample = lyrics_df.sample(random_sample)['summary']
         
-        user_mood = user_mood + "." + playlist_description + ".".join(lyrics_sample) 
+        user_mood = user_mood + ". " + playlist_description + ". " + ".".join(lyrics_sample) 
             
         st.header("Summarization completed!")
         st.write(summarize_lyrics(user_mood))
-        
+            
         st.header("Here's your playlist")
-        recs = recommend(sp, user_mood)
-        st.write(recs)
+        with st.spinner("Recommending..."):
+            elapsed_time = time.time() - start_time
+            if elapsed_time < 30:
+                time.sleep(30 - elapsed_time)
+            recs = recommend(sp, user_mood)
+            st.write(recs)
         
         if st.button("Add playlist", type="primary"):
             playlist_name = st.text_input("Give your playlist a name", user_mood[:30])
