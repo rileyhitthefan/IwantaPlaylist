@@ -3,3 +3,4 @@ data/
 spotify/
 __pycache__/
 .vscode/
+.cache
