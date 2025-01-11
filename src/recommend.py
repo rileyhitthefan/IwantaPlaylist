@@ -27,12 +27,11 @@ def recommend(sp, query, limit=30):
     if not sp: 
         sp = spotify_authenticate()
         
-    if len(query) > 250:
-        query = query[:250]
+    if len(query) > 240:
+        query = query[:240]
         
     try:
-        search_recs = sp.search(q = query, type="track", limit = limit)
-        response = search_recs
+        search_recs = sp.search(q = query, type="track", market = "US", limit = limit)
         recs = []
         for track in search_recs['tracks']['items']:
             recs.append({

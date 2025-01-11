@@ -9,7 +9,7 @@ from spotipy.oauth2 import SpotifyOAuth
 CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
-SCOPES = "user-library-read playlist-read-private user-top-read"
+SCOPES = "user-library-read playlist-read-private user-top-read playlist-modify-private playlist-modify-public"
 
 def spotify_authenticate():
     """

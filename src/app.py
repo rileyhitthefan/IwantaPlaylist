@@ -49,7 +49,7 @@ if st.session_state["spotify_client"]:
     playlist_description = ''.join(p['description'] for p in user_playlists if p['name'] == selected_playlist)
     st.write(playlist_description)
     
-    
+    st.session_state["selected_playlist"] = selected_playlist
     # Display playlist tracks
     playlist_id = ''.join(p['id'] for p in user_playlists if p['name'] == selected_playlist)
     if playlist_id:
@@ -57,26 +57,30 @@ if st.session_state["spotify_client"]:
         tracks = pd.DataFrame(tracks)
         st.write(tracks)
         
-        # Match lyrics
-        with st.spinner("Matching lyrics..."):
-            lyrics_df = match_lyrics(tracks.sample(50) if len(tracks) > 50 else tracks)
-            lyrics_df = clean_lyrics(lyrics_df, 'lyrics')
-        st.write("Lyrics found!")
+        if "lyrics" not in st.session_state:
+            # Match lyrics
+            with st.spinner("Matching lyrics..."):
+                lyrics_df = match_lyrics(tracks.sample(50) if len(tracks) > 50 else tracks)
+                lyrics_df = clean_lyrics(lyrics_df, 'lyrics')
+            st.session_state["lyrics_df"] = lyrics_df
+            st.write("Lyrics found!")
         
-        # Sentiment Analysis
-        with st.spinner("Summarizing your playlist..."):
-            summaries = []
-            for lyrics in lyrics_df['lyrics']:
-                summaries.append(summarize_lyrics(lyrics))
-            lyrics_df['summary'] = summaries
-            random_sample = len(lyrics_df)//2
-            lyrics_sample = lyrics_df.sample(random_sample)['summary']
+        if "summary" not in st.session_state:
+            with st.spinner("Summarizing your playlist..."):
+                summaries = []
+                for lyrics in lyrics_df['lyrics']:
+                    summaries.append(summarize_lyrics(lyrics))
+                lyrics_df['summary'] = summaries
+                random_sample = len(lyrics_df)//2
+                lyrics_sample = lyrics_df.sample(random_sample)['summary']
+            
+            user_mood = user_mood + ". " + playlist_description + ". " + ".".join(lyrics_sample) 
+                
+            st.header("Summarization completed!")
+            st.write(summarize_lyrics(user_mood))
+            
+            st.session_state["summary"] = user_mood
         
-        user_mood = user_mood + ". " + playlist_description + ". " + ".".join(lyrics_sample) 
-            
-        st.header("Summarization completed!")
-        st.write(summarize_lyrics(user_mood))
-            
         st.header("Here's your playlist")
         with st.spinner("Recommending..."):
             elapsed_time = time.time() - start_time
@@ -85,7 +89,19 @@ if st.session_state["spotify_client"]:
             recs = recommend(sp, user_mood)
             st.write(recs)
         
-        if st.button("Add playlist", type="primary"):
+        add_playlist = st.button("Add playlist", type="primary")
+            
+        if add_playlist:
             playlist_name = st.text_input("Give your playlist a name", user_mood[:30])
-            rec_tracks = recommend(sp, user_mood)
-            add_playlist(sp, playlist_name, recs['id'].tolist())
+            if not st.session_state["playlist_name"]:
+                st.session_state["playlist_name"] = None
+            st.session_state["playlist_name"] = playlist_name
+
+            if st.session_state.get("playlist_name"):
+                # Use add_playlist function to create the new playlist
+                playlist_name = st.session_state["playlist_name"]
+                track_ids = recs['id'].tolist()  # Assuming 'recs' contains track IDs
+                
+                # Add playlist to Spotify
+                add_playlist(sp, playlist_name, track_ids)
+                st.success("Playlist added!")
