@@ -20,7 +20,7 @@ def spotify_authenticate():
         client_secret=CLIENT_SECRET,
         redirect_uri=REDIRECT_URI,
         scope=SCOPES,
-        cache_path="./src/.cache"
+        cache_path=".cache"
     )
     
     sp = spotipy.Spotify(oauth_manager=oauth_manager)
