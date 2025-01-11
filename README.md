@@ -7,18 +7,19 @@
   - User authentication with Spotify.
   - Summarization and sentiment analysis of user's tracks.
   - Fetching related tracks for playlist suggestions.
-  - User feedback system (like/dislike) for improving recommendations.
 
 #### **1. File Structure**
 ```
 .
-├── app.py                      # Main Streamlit app
-├── spotify_auth.py             # Spotify authentication logic
-├── user_data.py                # Functions for fetching playlists, tracks, and related content
-├── lyrics.py                   # Match lyrics with songs and process lyrics
-├── recommend.py                # Logic for related tracks and playlist recommendations
+├── .env                        # Environment variables 
+├── src/                        # Application source code
+│   ├── app.py                  # Main Streamlit app
+│   ├── spotify_auth.py         # Spotify authentication logic
+│   ├── user_data.py            # Get user's Spotify playlists
+│   ├── lyrics.py               # Match lyrics with songs and process lyrics
+│   ├── recommend.py            # Tracks recommendation
 ├── requirements.txt            # Dependencies
-└── README.md                   # Project documentation
+└── README.md                   # Documentation
 ```
 
 #### **2. Installation and Usage**
