@@ -7,3 +7,4 @@ transformers
 sentence-transformers
 text2text
 python-dotenv
+backoff
