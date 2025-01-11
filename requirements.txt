@@ -5,6 +5,5 @@ pandas
 numpy
 transformers
 sentence-transformers
-scikit-learn
 text2text
 python-dotenv
