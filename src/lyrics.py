@@ -30,7 +30,7 @@ def match_lyrics(df, frac = 0.3):
     Returns: 
         df (DataFrame): DataFrame containing the lyrics of the songs
     """
-    genius = lyricsgenius.Genius(gen_client_access_token, sleep_time=1)
+    genius = lyricsgenius.Genius(gen_client_access_token, sleep_time=1, timeout=15)
     
     list_lyrics = []
     # get random n songs

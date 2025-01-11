@@ -1,6 +1,6 @@
 import spotipy
 import pandas as pd
-from src.spotify_auth import spotify_authenticate
+from spotify_auth import spotify_authenticate
 
 import time
 import requests
