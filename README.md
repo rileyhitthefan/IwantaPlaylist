@@ -77,7 +77,7 @@
 
 ----
 
-#### **4. Tools and Technologies**
+#### **Tools and Technologies**
 - **Back-End:** Spotipy (Spotify API Python library)
 - **Sentiment Analysis:** Transformer, NLTK (VADER)
 - **Front-End:** Streamlit
