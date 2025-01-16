@@ -2,6 +2,8 @@
 
 ----
 
+[Link to article](https://emobitsh.notion.site/IwantaPlaylist-NLP-based-music-recommender-178d590d474f80209641c2ab728bd1a4)
+
 #### **Project Overview**
 - **Objective:** Recommend playlists based on user specified mood and their chosen tracks 
 - **Key Features:**
