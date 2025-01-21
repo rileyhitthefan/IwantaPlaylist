@@ -100,3 +100,32 @@ For multilingual use case: https://huggingface.co/tabularisai/multilingual-senti
 
 **Contextual Semantic Search (CSS)**
 Search and find information by considering meaning and context to deliver more relevant results. A prompt is analyzed with respect to its sentiment, emotion and intent.
+
+**Evaluation**
+Two common metrics are BLEU and ROUGE scores
+- BLEU (Bilingual Evaluation Understudy): widely used for machine translation tasks
+
+$$ 0 <= BLEU = BP*(\sum(wn*pn))^e <= 1 $$
+
+  - Measures the similarity between machine-translated and human reference translations using n-grams --> Precision of n-grams
+  - The precision of n-grams in machine translation is applied with a brevity penalty on translations shorter than reference
+    - BP (Brevity penalty) = min(1, ref_len/trans_len)
+    - pn (Precision of n-grams) = len(common_ngrams)/len(total_ngrams)
+      - w (Weights of precision of n-grams)
+  - Simple and effective way to assess quality of machine translations
+    - Relies heavily on n-grams and not overall meaning or fluency of translation
+
+- ROUGE (Recall-Oriented Understudy for Gisting Evaluation): commonly used for text summarization tasks
+ 
+$$ 0 <= \sum(rn) <= 1 $$
+ 
+  - Evaluates quality by comparing to reference summaries provided by humans
+  - Uses overlapping n-grams to measure similarity and calculate recall of n-grams
+  - rn (Recall of n-grams): len(common_ngrams)/len(ref_ngrams)
+  - ROUGE scores are branched into ROUGE-N, ROUGE-L, ROUGE-S
+    - ROUGE-N: measures and computes precision, recall and F1 based on n-gram overlap (consider grammatical correctness and fluency)
+    - ROUGE-L: measures longest common subsequence (regardless of word order) and computes precision, recall, F1 based on length LCS (evaluate semantic similarity and content coverage)
+    - ROUGE-S: measures skip-bigram (at most 1 intervening word) and computes precision, recall and F1 (evaluate coherence and local cohesion for adjacent words)
+  - Objectively (?) assesses quality of machine summaries, flexible n for n-grams
+    - May not fully capture semantic meaning or coherence
+    - Relies heavily on n-gram overlap
