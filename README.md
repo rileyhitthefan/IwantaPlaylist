@@ -111,7 +111,7 @@ $$ 0 <= BLEU = BP*(\sum(wn*pn))^e <= 1 $$
   - The precision of n-grams in machine translation is applied with a brevity penalty on translations shorter than reference
     - BP (Brevity penalty) = min(1, ref_len/trans_len)
     - pn (Precision of n-grams) = len(common_ngrams)/len(total_ngrams)
-      - w (Weights of precision of n-grams)
+      - wn (Weights of precision of n-grams)
   - Simple and effective way to assess quality of machine translations
     - Relies heavily on n-grams and not overall meaning or fluency of translation
 
