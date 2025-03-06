@@ -1,7 +1,9 @@
 archived/data/
+notebooks/songs_lyrics.csv
 .env
 spotify/
 __pycache__/
 .vscode/
 .cache
 img/
+
