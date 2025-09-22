@@ -7,7 +7,7 @@ from recommend import * # recommend, add_playlist
 
 # Page title
 st.set_page_config(page_title="SpotiMine")
-st.title("SpotiMine - Playlist Recommender")
+st.title("IWantaPlaylist - Playlist Recommender")
 
 # Spotify Authentication
 if "spotify_client" not in st.session_state:
