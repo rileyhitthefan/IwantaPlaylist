@@ -2,6 +2,7 @@ archived/data/
 notebooks/songs_lyrics.csv
 .env
 spotify/
+spotify3.12/
 __pycache__/
 .vscode/
 .cache
